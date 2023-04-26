@@ -63,7 +63,7 @@ Available years:
 2020, 2021, 2022, 
  Enter year: 
  ```
-And select output file
+And select output file format
 ```
 Select a file format for the output:
     1. CSV
