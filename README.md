@@ -73,7 +73,7 @@ Select a file format for the output:
 Excel file saved as 'output.xlsx'
 ```
 
-## Advanced users
+## In the code
 
 From a Python console can be use as 'Console.py', note idd create a Pandas DataFrame
 
