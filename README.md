@@ -9,9 +9,26 @@ This version downloads one complete year of available foF2, hmF2, foE, hmE and M
 
 Time resolution, missing years and data reliability depends on each repository.
 
+The code was developed and tested on Linux-Ubuntu and Windows 11 (Anaconda), using Python 3.8 (and higher).
+
+This code uses Pandas DataFrame, if not installed try:
+```
+pip install pandas
+or
+conda install pandas
+```
+
+openxls for Excel output, if not installed:
+
+```
+pip install openpyxl
+or
+conda install openpyxl
+```
+
 Simple use with 0-Test.py
 
-From console
+From terminal or CMD
 ```
 $ python 0-Test.py 
 ```
@@ -73,7 +90,7 @@ Select a file format for the output:
 Excel file saved as 'output.xlsx'
 ```
 
-## In the code
+## In your code
 
 From a Python console can be use as 'Console.py', note idd create a Pandas DataFrame
 
@@ -88,7 +105,7 @@ df_jap_manual, df_jap_auto = idd.ionosondesJapan()
 df_giro = idd.GIRO()
 ```
 
-In the three repository options can be set the station, year and proxy if needed.
+In three repositories can be set the station, year and proxy if needed.
 
 Ex. (Japan-kokubunji):
 ```
