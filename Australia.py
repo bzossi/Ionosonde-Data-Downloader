@@ -1,7 +1,7 @@
 
 
 
-def ionosondesAustralia(proxy=None):
+def ionosondesAustralia(station = None, year = None, proxy=None):
     stations_aus = {'brisbane'  :'bri5d',
                     'casey'     :'cascd',
                     'canberra'  :'cbr5d',
@@ -45,40 +45,45 @@ def ionosondesAustralia(proxy=None):
     #Read stations names from file
     stations = pd.read_csv('Aus_stations.csv', header=None)[0]
     
-    print (stations.to_string())
-    print()
-    sleep(0.5) #Sleep to avoid "input" take text printed before =\ (often happens)
-    station = int(input('Select Station: '))
+    if station == None:
+        print (stations.to_string())
+        print()
+        sleep(0.5) #Sleep to avoid "input" take text printed before =\ (often happens)
+        station = int(input('Select Station: '))
     
     print()
     print('Searching available years...')
     stat = stations[station]
     aux = pd.read_html(f'https://downloads.sws.bom.gov.au/wdc/iondata/au/{stat}/')[0]
     aux = aux.Name[2][:-4]
-    years_avail = pd.read_html('https://downloads.sws.bom.gov.au/wdc/iondata/au/{}/{}.00/'.format(stat, aux))[0]
-    years_avail = years_avail.Name.dropna()
-    years_avail = years_avail.values[1:]
-    years_avail = np.array([int(years_avail[i][-5:-3]) for i in range(len(years_avail))])
     
-    years_avail[years_avail>15] += 1900
-    years_avail[years_avail<15] += 2000
-    years_avail                 = np.sort(years_avail)
+    if year == None:
+        years_avail = pd.read_html('https://downloads.sws.bom.gov.au/wdc/iondata/au/{}/{}.00/'.format(stat, aux))[0]
+        years_avail = years_avail.Name.dropna()
+        years_avail = years_avail.values[1:]
+        years_avail = np.array([int(years_avail[i][-5:-3]) for i in range(len(years_avail))])
+        
+        years_avail[years_avail>15] += 1900
+        years_avail[years_avail<15] += 2000
+        years_avail                 = np.sort(years_avail)
+        
+        # Years look for after 2014
+        aft2014 = f'https://downloads.sws.bom.gov.au/wdc/wdc_ion_auto/{stations_aus[stat]}/scl/auto/'
+        aft2014 = pd.read_html(aft2014, skiprows=2)[0]['Parent Directory'].str.slice(0,-1)[:-1].astype(int).values+2000
+        
+        years_avail = np.append(years_avail, aft2014)
+
+        print('\nAvailable years: \n')
+        for i in range(1,years_avail.shape[0] + 1):
+            end = ', '
+            if i%10 == 0:
+                end ="\n"
+            print(years_avail[i-1], end=end)
+
+
+        year = int(input('\n Enter year: '))
     
-    # Years look for after 2014
-    aft2014 = f'https://downloads.sws.bom.gov.au/wdc/wdc_ion_auto/{stations_aus[stat]}/scl/auto/'
-    aft2014 = pd.read_html(aft2014, skiprows=2)[0]['Parent Directory'].str.slice(0,-1)[:-1].astype(int).values+2000
-    
-    years_avail = np.append(years_avail, aft2014)
 
-    print('\nAvailable years: \n')
-    for i in range(1,years_avail.shape[0] + 1):
-        end = ', '
-        if i%10 == 0:
-            end ="\n"
-        print(years_avail[i-1], end=end)
-
-
-    year = int(input('\n Enter year: '))   
     if year < 2014:
         print('Downloading data...')
     elif year>=2014:
@@ -174,7 +179,7 @@ def ionosondesAustralia(proxy=None):
             M3000F2.index = M3000F2.index.rename('Time')
             M3000F2       = M3000F2.replace(0, np.nan)
         except HTTPError:
-            print('hmE empty')
+            print('M3000F2 empty')
             M3000F2 = np.nan
             
         
