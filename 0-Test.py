@@ -82,6 +82,8 @@ Select a file format for the output:
     1. CSV
     2. Excel
       ''')
+      
+sleep(0.5)
 choice = int(input())
 
 
