@@ -6,9 +6,9 @@ Ionosonde Data Downloader uses internet conection to acquire ionospheric data fr
 * GIRO database.
 
 Please check the conditions of data usage for each repository:
-* [https://sws.bom.gov.au/World_Data_Centre] (https://sws.bom.gov.au/World_Data_Centre)
-* [https://wdc.nict.go.jp/IONO/HP2009/contact_us_e.html] (https://wdc.nict.go.jp/IONO/HP2009/contact_us_e.html)
-* [https://giro.uml.edu/didbase/RulesOfTheRoad.html] (https://giro.uml.edu/didbase/RulesOfTheRoad.html)
+* https://sws.bom.gov.au/World_Data_Centre
+* https://wdc.nict.go.jp/IONO/HP2009/contact_us_e.html
+* https://giro.uml.edu/didbase/RulesOfTheRoad.html
 
 Acknowledge if data is used
 
