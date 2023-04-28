@@ -34,11 +34,11 @@ def ionosondesJapan(station=None, year=None, proxy=None):
     
     if station == None:
         print ('''
-1) Wakkanai (1948-2022)
+1) Wakkanai (1948-2023)
 2) Akita (1965-1993)
-3) Kokubunji (1957-2022)
-4) Yamagawa (1965-2022)
-5) Okinawa (1972-2022)
+3) Kokubunji (1957-2023)
+4) Yamagawa (1965-2023)
+5) Okinawa (1972-2023)
                ''')
         sleep(0.5)
         station = int(input('Enter Station: '))
