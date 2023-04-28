@@ -100,6 +100,7 @@ def GIRO(station = None, year = None, proxy = None):
     
     df = df.astype('float64')
     
+    df.rename(columns={'CS':'Confidence'})
     
     return df
 

@@ -5,6 +5,13 @@ Ionosonde Data Downloader uses internet conection to acquire ionospheric data fr
 * Japan (wdc.nict.go.jp)
 * GIRO database.
 
+Please check the conditions of data usage for each repository:
+* [https://sws.bom.gov.au/World_Data_Centre] (https://sws.bom.gov.au/World_Data_Centre)
+* [https://wdc.nict.go.jp/IONO/HP2009/contact_us_e.html] (https://wdc.nict.go.jp/IONO/HP2009/contact_us_e.html)
+* [https://giro.uml.edu/didbase/RulesOfTheRoad.html] (https://giro.uml.edu/didbase/RulesOfTheRoad.html)
+
+Acknowledge if data is used
+
 This version downloads one complete year of available foF2, hmF2, foE, hmE and M3000F2 (only Australia and GIRO).
 
 Time resolution, missing years and data reliability depends on each repository.
@@ -105,7 +112,7 @@ df_jap_manual, df_jap_auto = idd.ionosondesJapan()
 df_giro = idd.GIRO()
 ```
 
-In three repositories can be set the station, year and proxy if needed.
+In three repositories can be set the station, year and proxy (if needed).
 
 Ex. (Japan-kokubunji):
 ```
