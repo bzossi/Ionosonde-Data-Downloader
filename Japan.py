@@ -30,7 +30,10 @@ def ionosondesJapan(station=None, year=None, proxy=None):
     opener  = urllib.request.build_opener(proxies)
     urllib.request.install_opener(opener)
     
+    # define empty DataFrame to avoid error at return None
     manu, auto = pd.DataFrame(), pd.DataFrame()
+    
+    stations = ['Wakkanai', 'Akita', 'Kokubunji', 'Yamagawa', 'Okinawa']
     
     if station == None:
         print ('''
@@ -126,6 +129,6 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         print('no data automatically scaled data')
         
     
-    return manu, auto
+    return manu, auto, stations[station], year
 
 

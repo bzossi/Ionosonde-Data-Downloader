@@ -190,7 +190,8 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
         
     else: # Year > 2014
         fof2 = aus_2014(year, stat, proxy)
-    return fof2
+    return fof2, list(stations_aus)[station], year
+
 
 
 

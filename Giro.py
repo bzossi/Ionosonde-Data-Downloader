@@ -102,7 +102,7 @@ def GIRO(station = None, year = None, proxy = None):
     
     df.rename(columns={'CS':'Confidence'})
     
-    return df
+    return df, stats['STATION NAME'][station], year
 
 
 
