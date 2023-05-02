@@ -107,6 +107,7 @@ take into account one file could be empty
         df_manual.to_csv(f'{station}_manual_{year}.csv')
         df_auto.to_csv  (f'{station}_auto_{year}.csv')
         print("CSV file saved as 'station_year.csv'")
+        
     elif choice == 2:
         df_manual.to_excel(f'{station}_manual_{year}.xlsx')
         df_auto.to_excel  (f'{station}_auto_{year}.xlsx')

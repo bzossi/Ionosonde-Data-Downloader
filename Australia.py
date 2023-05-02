@@ -87,7 +87,7 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
     if year < 2014:
         print('Downloading data...')
     elif year>=2014:
-        print('Downloading data... Years after 2014 can take a while')
+        print('Downloading data... Years after 2014 can take a while (time resolution of minutes)')
 
     #Australia have hourly scaled before 2014 and minutes after
     #Two routines is needed, second part uses threads to speed up
