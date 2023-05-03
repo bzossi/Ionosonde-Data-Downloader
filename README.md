@@ -93,7 +93,7 @@ Select a file format for the output:
     2. Excel
       
 2
-Excel file saved as 'output.xlsx'
+Excel file saved as 'station_year.xlsx'
 ```
 
 ## In your code
@@ -103,20 +103,23 @@ From a Python console can be use as 'Console.py', note idd create a Pandas DataF
 ```
 import iono_data_downloader as idd
 
-df_aus = idd.ionosondesAustralia()
+df_aus, station, year = idd.ionosondesAustralia()
 
 # Japan search for manual and automatic scaled data
-df_jap_manual, df_jap_auto = idd.ionosondesJapan()
+df_jap_manual, df_jap_auto, station, year = idd.ionosondesJapan()
 
-df_giro = idd.GIRO()
+df_giro, station, year = idd.GIRO()
 ```
 
 In three repositories can be set the station, year and proxy (if needed).
 
-Ex. (Japan-kokubunji):
+Example of use:
 ```
-fof2_manual, fof2_auto = idd.ionosondesJapan(station=3, year=2020, proxy = '10.10.0.31:80')
+import iono_data_downloader as idd
+df_aus, station, year = idd.ionosondesAustralia(station = 2, year = 2016)
+df_aus [(df_aus.index.month == 3) & (df_aus.index.day == 15)].fof2.plot(ylabel='foF2 [MHz]')
 ```
 
+![fof2](fof2.png)
 
 
