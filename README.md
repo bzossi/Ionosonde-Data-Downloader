@@ -33,11 +33,11 @@ or
 conda install openpyxl
 ```
 
-Simple use with 0-Test.py
+Simple use with "single_use.py"
 
 From terminal or CMD
 ```
-$ python 0-Test.py 
+$ python single_use.py
 ```
 Returns a list to choose 
 ```
@@ -47,7 +47,6 @@ Returns a list to choose
           
 Select a Database: 
 ```
-
 Once selected, (ex. 1)
 ```
 0       brisbane
