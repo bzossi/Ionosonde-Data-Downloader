@@ -22,7 +22,7 @@ def GIRO(station = None, year = None, proxy = None):
     from pandas import read_csv, read_table, to_datetime, errors
     from time import sleep
     
-    from datetime import date
+    from datetime import date, timedelta
     #ssl needed to request data from URL
     import ssl
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -41,36 +41,50 @@ def GIRO(station = None, year = None, proxy = None):
     stats = read_csv('Giro_stats.csv', sep=';')
     
     if station == None:
+        # Print stations in 4 columns
        stationslist = [f'{i:<2}: {stats.loc[i]["STATION NAME"]:<20}; \
        {i+1:<2}: {stats.loc[i+1]["STATION NAME"]:<20}; \
        {i+2:<2}: {stats.loc[i+2]["STATION NAME"]:<20};\
-       {i+3:<2}: {stats.loc[i+2]["STATION NAME"]:<20}' for i in range(0,95,4)]
-                       
+       {i+3:<2}: {stats.loc[i+2]["STATION NAME"]:<20}' for i in range(0,96,4)]
+       
+       print()
        for i in stationslist:
-           print(i) 
-           
+           print(i)
+       #Last stations
+       print(f'95: {stats.loc[95]["STATION NAME"]}               ;',end='')
+       print(f'        96: {stats.loc[96]["STATION NAME"]}             ;',end='')
+       print(f'        97: {stats.loc[97]["STATION NAME"]}',end='')
+       
+ 
+       print()
        station = int(input('\nSelect one station number (U = updated): '))
         
     code = stats.URSI[station]
     
     if year == None:
         print('Data available:')
-        #check if station is updated until present
+        #check if station is updated until last two days
         today = date.today()
-        dd = str(today.day).zfill(2)
-        mm = str(today.month).zfill(2)
-        yyyy = str(today.year)
-        url = f'https://lgdc.uml.edu/common/DIDBGetValues?ursiCode={code}&charName=foF2,foE,hmF2,hmE,MUFD&DMUF=3000&fromDate={yyyy}%2F{mm}%2F{dd}+00%3A00%3A00&toDate={yyyy}%2F{mm}%2F{dd}+23%3A59%3A00'
+        dd1 = str(today.day).zfill(2)
+        mm1 = str(today.month).zfill(2)
+        yyyy1 = str(today.year)
+        
+        dd0 = str((today - timedelta(2)).day).zfill(2)
+        mm0 = str((today - timedelta(2)).month).zfill(2)
+        yyyy0 = str((today - timedelta(2)).year)
+        url = f'https://lgdc.uml.edu/common/DIDBGetValues?ursiCode={code}&charName=foF2,foE,hmF2,hmE,MUFD&DMUF=3000&fromDate={yyyy0}%2F{mm0}%2F{dd0}+00%3A00%3A00&toDate={yyyy1}%2F{mm1}%2F{dd1}+23%3A59%3A00'
         df = read_table(url)
     
         t0 = stats.loc[station]["EARLIEST DATA"]
         t1 = stats.loc[station]["LATEST DATA"]
-    
+        
+        
         if df.values[-1] != 'ERROR: No data found for requested period':
             t1 = 'Present'
     
         print(f'from {t0}.\nTo {t1} \n')
-    
+        
+        print('Some stations could have missing years')
 
         sleep(0.5) #Sleep to avoid "input" take text printed before =\ (often happens)
         year = input('Select year: ')
