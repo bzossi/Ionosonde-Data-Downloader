@@ -49,7 +49,7 @@ def GIRO(station = None, year = None, proxy = None):
        for i in stationslist:
            print(i) 
            
-       station = int(input('\nSelect one station number: '))
+       station = int(input('\nSelect one station number (U = updated): '))
         
     code = stats.URSI[station]
     
