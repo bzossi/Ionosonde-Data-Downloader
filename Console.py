@@ -11,9 +11,9 @@ import iono_data_downloader as idd
 
 ## NO PROXY
 
-# df_aus, station, year = idd.ionosondesAustralia()
+df_aus, station, year = idd.ionosondesAustralia()
 
-# df_jap_manual, df_jap_auto, station, year = idd.ionosondesJapan()
+df_jap_manual, df_jap_auto, station, year = idd.ionosondesJapan()
 
-# df_giro, station, year = idd.GIRO()
+df_giro, station, year = idd.GIRO()
 
