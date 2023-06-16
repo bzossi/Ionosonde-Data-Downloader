@@ -122,5 +122,26 @@ df_aus [(df_aus.index.month == 3) & (df_aus.index.day == 15)].fof2.plot(ylabel='
 
 ![fof2](fof2.png)
 
+## OMNI 2 solar and geomagnetic indices
 
-
+IDD can also download solar wind and geomagnetic conditions via the OMNI 2 (NASA) website.
+For example
+```
+ind = idd.OMNI2_indexes(2000)
+print(ind.keys())
+[out] Index(['Bartels', 'ID IMF spacecraft', 'ID SW spacecraft',
+       'n points IMF averages', 'n points plasma averages',
+       'Field Magnitude Average', 'Magnitude Average Field Vector',
+       'Lat.Angle Aver. Field Vector', 'Long.Angle Aver.Field Vector', 'Bx',
+       'ByGSE', 'BzGSE', 'ByGSM', 'BzGSM', 'sigma|B|', 'sigma B', 'sigma Bx',
+       'sigma By', 'sigma Bz', 'Proton temp', 'Proton Dens', 'Plasma speed',
+       'Plasma Long. Angle', 'Plasma Lat. Angle', 'Alpha/Proton ratio',
+       'Flow Pressure', 'sigma T', 'sigma N', 'sigma V', 'sigma phi V',
+       'sigma theta V', 'sigma-Alpha/Proton', 'Electric field', 'Plasma beta',
+       'Alfven mach number', 'Kp', 'R', 'dst', 'AE-index',
+       'Proton flux >1 Mev', 'Proton flux >2 Mev', 'Proton flux >4 Mev',
+       'Proton flux >10 Mev', 'Proton flux >30 Mev', 'Proton flux >60 Mev',
+       'Flag', 'ap-index', 'f10.7_index', 'PC(N) index', 'AL-index',
+       'AU-index', 'Mach number'],
+      dtype='object')
+```
