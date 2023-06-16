@@ -26,6 +26,7 @@ from Australia import ionosondesAustralia
 from Japan     import ionosondesJapan
 from Giro      import GIRO
 
+from OMNI2_indexes import OMNI2_indexes
 
 
 
