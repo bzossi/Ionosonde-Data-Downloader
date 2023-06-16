@@ -129,7 +129,9 @@ For example
 ```
 ind = idd.OMNI2_indexes(2000)
 print(ind.keys())
-[out] Index(['Bartels', 'ID IMF spacecraft', 'ID SW spacecraft',
+```
+```
+Index(['Bartels', 'ID IMF spacecraft', 'ID SW spacecraft',
        'n points IMF averages', 'n points plasma averages',
        'Field Magnitude Average', 'Magnitude Average Field Vector',
        'Lat.Angle Aver. Field Vector', 'Long.Angle Aver.Field Vector', 'Bx',
@@ -145,3 +147,4 @@ print(ind.keys())
        'AU-index', 'Mach number'],
       dtype='object')
 ```
+
