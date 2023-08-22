@@ -94,12 +94,7 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
     if year<2014:
         year = str(year)[2:]
         
-        if int(year) < 14:
-            days = pd.date_range(datetime(2000+int(year), 1, 1 , 0, 0), 
-                                       datetime(2000+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
-        else:
-            days = pd.date_range(datetime(1900+int(year), 1, 1 , 0, 0), 
-                                       datetime(1900+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
+        
         
         #Aus stats bef 2014 have one file each variable
         # foF2
@@ -111,6 +106,23 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
         except HTTPError:
             print('Year not found, try another')
             return
+        
+        
+        
+        if int(year) < 14:
+            # days = pd.date_range(datetime(2000+int(year), 1, 1 , 0, 0), 
+            #                            datetime(2000+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
+            auxdate = pd.to_datetime('20' + data[0].str.slice(start=6, stop=12)).to_frame()
+            days = auxdate[0].repeat(24) + np.array(list(pd.timedelta_range(start="0 hours", end="23 hours", freq="1H")) * auxdate.shape[0])
+
+        else:
+            # days = pd.date_range(datetime(1900+int(year), 1, 1 , 0, 0), 
+            #                            datetime(1900+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
+            auxdate = pd.to_datetime('19' + data[0].str.slice(start=6, stop=12)).to_frame()
+            days = auxdate[0].repeat(24) + np.array(list(pd.timedelta_range(start="0 hours", end="23 hours", freq="1H")) * auxdate.shape[0])
+
+
+        
         
         fof2aux = [int(data[0].values[j][13+i*5:16+i*5])/10 for j in range(len(data)) for i in range(24)]
         

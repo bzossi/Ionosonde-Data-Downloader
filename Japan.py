@@ -74,15 +74,22 @@ def ionosondesJapan(station=None, year=None, proxy=None):
     
     try:
         data = pd.read_csv(ionourl)
-        data = data.drop(data[data.index=='#                    fmin '].index)
+        data = data.drop(data[data.index == data.columns[0]].index)
+        
+        # wipe blank spaces
+        data.columns = data.columns.str.strip()
+        
+        # Avoid some undesirable lines
+        data = data[data.index == data.index[0]]
 
         dates = data[data.keys()[0]].str.slice(start = 0, stop = 14).replace(r'^\s*$', np.nan, regex=True).dropna()
         dates = pd.to_datetime(dates, format='%Y%m%d%H%M%S')
-        #Data, the r'^\s*$' means white spaces, there are simpler ways but works
-        fof2 = data['foF2 '].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
-        foE  = data['foE  '].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
-        hmF2 = data["h'F2 "].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
-        hmE  = data["h'E  "].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
+        
+        #Data, the r'^\s*$' means white spaces, there are simpler ways but this works
+        fof2 = data['foF2'].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
+        foE  = data['foE'].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
+        hmF2 = data["h'F2"].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
+        hmE  = data["h'E"].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
         
         # M3000F2  = data["M3F2 "].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
         
@@ -105,14 +112,19 @@ def ionosondesJapan(station=None, year=None, proxy=None):
 
     try:
         data = pd.read_csv(ionourl)
-        data = data.drop(data[data.index == data.keys()[0]].index)
+        data = data.drop(data[data.index == data.columns[0]].index)
         
+        # wipe blank spaces
+        data.columns = data.columns.str.strip()
+        
+        # Avoid some undesirable lines
+        data = data[data.index == data.index[0]]
         dates = pd.to_datetime(data[data.keys()[0]].str.slice(stop=14), format='%Y%m%d%H%M%S')
         
-        fof2 = data['   foF2  '].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
-        foE = data["   foE   "].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
-        hmF2 = data["   h'F2  "].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
-        hmE = data["   h'E   "].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
+        fof2 = data['foF2'].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
+        foE = data["foE"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
+        hmF2 = data["h'F2"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
+        hmE = data["h'E"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
         
         # M3000F2  = data['   M3F2  '].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
         #Data
@@ -129,7 +141,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         print('no data automatically scaled data')
         
     
-    return manu, auto, stations[station], year
+    return manu, auto, stations[station-1], year
 
 
 
