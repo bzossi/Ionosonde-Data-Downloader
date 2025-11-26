@@ -68,7 +68,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         return
 
     #Manually scaled
-    ionourl = f'https://wdc.nict.go.jp/IONO/observation-history/factor-manual-{stat}-{year}H.sjis.txt'
+    ionourl = f'https://wdc.nict.go.jp/Ionosphere/archive/observation-history/factor-manual-{stat}-{year}H.sjis.txt'
     print(ionourl)
     print('Downloading data...')
     
@@ -107,7 +107,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
 
 
     #Automatically scaled
-    ionourl = f'https://wdc.nict.go.jp/IONO/observation-history/factor-auto-{stat}-{year}.sjis.txt'
+    ionourl = f'https://wdc.nict.go.jp/Ionosphere/archive/observation-history/factor-auto-{stat}-{year}.sjis.txt'
     print(ionourl)
 
     try:

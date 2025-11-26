@@ -219,7 +219,7 @@ def aus_2014(YYYY, stat, proxy=None):
     #define proxy, sometimes doesn't work if not set as None
 
     stations_aus = {'brisbane'  :'bri5f',
-                    'casey'     :'cascf',
+                    'casey'     :'cascd',
                     'canberra'  :'cbr5f',
                     'cocos'     :'cck5f',
                     'camden'    :'cdn5f',
@@ -247,9 +247,9 @@ def aus_2014(YYYY, stat, proxy=None):
     #Separa el codigo de la estacion
     station = stations_aus[stat]
     
-    #rango de dias, esta parte esta por dia
+    #rango de dias
     start_date = datetime(YYYY, 1, 1)
-    end_date   = datetime(YYYY, 5, 31)
+    end_date   = datetime(YYYY, 12, 31)
     dates = pd.date_range(start_date, end_date, freq='D').to_pydatetime()
 
     #Search for data, if not, change instrument, basically 'd' for 'f' the last, for townsville can be tvl5d ,5f,6a,cd
@@ -308,7 +308,8 @@ def aus(url, proxy=None):
     from urllib.error import HTTPError
     import urllib.request
     import pandas as pd
-    
+    import pandas.io.common
+
     proxies = urllib.request.ProxyHandler({'http': proxy})
     if proxy != None:
         proxies = urllib.request.ProxyHandler({'http': proxy, 'https': proxy})
@@ -320,6 +321,11 @@ def aus(url, proxy=None):
         daily = pd.read_csv(url, header=None)
     except HTTPError:
         return
+    except pandas.errors.EmptyDataError:
+        return
+    # prevent some rare bad lines
+    daily = daily[daily[0].str.slice(stop=2)== daily[0].str.slice(stop=2).unique()[0]]
+    
     f2   = daily[0].str.slice(-25, -22).astype('int64')/10
     hmf2 = daily[0].str.slice(-15, -12).astype('int64')
     foE  = daily[0].str.slice(16, 19).astype('int64')/100
