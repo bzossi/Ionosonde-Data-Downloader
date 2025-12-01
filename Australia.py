@@ -89,14 +89,12 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
     elif year>=2014:
         print('Downloading data... Years after 2014 can take a while (time resolution of minutes)')
 
-    #Australia have hourly scaled before 2014 and minutes after
-    #Two routines is needed, second part uses threads to speed up
+    # Australia have hourly scaled before 2014 and minutes after
+    # Two routines is needed, second part uses threads to speed up
     if year<2014:
         year = str(year)[2:]
-        
-        
-        
-        #Aus stats bef 2014 have one file each variable
+
+        #Aus stats before 2014 have one file each variable
         # foF2
         aux2 = f'{aux}.00/{aux}00.'
         ionourl = f'https://downloads.sws.bom.gov.au/wdc/iondata/au/{stat}/{aux2}{year}.gz'
@@ -113,13 +111,23 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
             # days = pd.date_range(datetime(2000+int(year), 1, 1 , 0, 0), 
             #                            datetime(2000+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
             auxdate = pd.to_datetime('20' + data[0].str.slice(start=6, stop=12)).to_frame()
-            days = auxdate[0].repeat(24) + np.array(list(pd.timedelta_range(start="0 hours", end="23 hours", freq="1H")) * auxdate.shape[0])
+            td = pd.timedelta_range(start="0h", end="23h", freq="1h")       # TimedeltaIndex (OK)
+            td = np.tile(td, auxdate.shape[0])                             # repetir sin perder el dtype
+            
+            base = np.repeat(auxdate, 24)                                  # repetir fechas
+            
+            days = base + td                                               # suma totalmente vectorizada
 
         else:
             # days = pd.date_range(datetime(1900+int(year), 1, 1 , 0, 0), 
             #                            datetime(1900+int(year), 12, 31 , 23, 0), freq='H').to_pydatetime()
             auxdate = pd.to_datetime('19' + data[0].str.slice(start=6, stop=12)).to_frame()
-            days = auxdate[0].repeat(24) + np.array(list(pd.timedelta_range(start="0 hours", end="23 hours", freq="1H")) * auxdate.shape[0])
+            td = pd.timedelta_range(start="0h", end="23h", freq="1h")       # TimedeltaIndex (OK)
+            td = np.tile(td, auxdate.shape[0])                             # repetir sin perder el dtype
+            
+            base = np.repeat(auxdate, 24)                                  # repetir fechas
+            
+            days = base + td                                               # suma totalmente vectorizada
 
 
         
@@ -131,20 +139,20 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
         fof2       = fof2.replace(0, np.nan)
         
         
-        # hmF2
+        # h'F2
         aux2 = '{}.04/{}04.'.format(aux,aux)
         ionourl = f'https://downloads.sws.bom.gov.au/wdc/iondata/au/{stat}/{aux2}{year}.gz'
         print(ionourl)
-        try:
+        try: 
             data = pd.read_csv(ionourl, compression='gzip', header=None)
-            hmF2aux = [int(data[0].values[j][13+i*5:16+i*5]) for j in range(len(data)) for i in range(24)]
+            hpF2aux = [int(data[0].values[j][13+i*5:16+i*5]) for j in range(len(data)) for i in range(24)]
             
-            hmF2       = pd.DataFrame(index=days, data={'hmF2':hmF2aux})
-            hmF2.index = hmF2.index.rename('Time')
-            hmF2       = hmF2.replace(0, np.nan)
+            hpF2       = pd.DataFrame(index=days, data={'hpF2':hpF2aux})
+            hpF2.index = hpF2.index.rename('Time')
+            hpF2       = hpF2.replace(0, np.nan)
         except HTTPError:
-            print('hmF2 empty')
-            hmF2 = np.nan
+            print('hpF2 empty')
+            hpF2 = np.nan
             
         
             
@@ -195,7 +203,7 @@ def ionosondesAustralia(station = None, year = None, proxy=None):
             M3000F2 = np.nan
             
         
-        fof2['hmF2'] = hmF2
+        fof2['hpF2'] = hpF2
         fof2['foE']  = foE
         fof2['hmE']  = hmE
         fof2['M3000F2']  = M3000F2/100
@@ -271,7 +279,7 @@ def aus_2014(YYYY, stat, proxy=None):
     avail_day_files = [url + aux[i] for i in range(len(aux))]
 
     from joblib import Parallel, delayed
-    auxfof2 = Parallel(n_jobs=20, backend='threading')(delayed(aus)(urls, proxy = proxy) for urls in avail_day_files)
+    auxfof2 = Parallel(n_jobs=10, backend='threading')(delayed(aus)(urls, proxy = proxy) for urls in avail_day_files)
 
     # auxfof2 = [aus(urls, proxy = proxy) for urls in avail_day_files]
 
@@ -293,7 +301,7 @@ def aus_2014(YYYY, stat, proxy=None):
         avail_day_files = [url + aux[i] for i in range(len(aux))]
 
         from joblib import Parallel, delayed
-        auxfof2 = Parallel(n_jobs=20, backend='threading')(delayed(aus)(urls, proxy = proxy) for urls in avail_day_files)
+        auxfof2 = Parallel(n_jobs=10, backend='threading')(delayed(aus)(urls, proxy = proxy) for urls in avail_day_files)
 
         # auxfof2 = [aus(urls, proxy = proxy) for urls in avail_day_files]
 
@@ -327,7 +335,7 @@ def aus(url, proxy=None):
     daily = daily[daily[0].str.slice(stop=2)== daily[0].str.slice(stop=2).unique()[0]]
     
     f2   = daily[0].str.slice(-25, -22).astype('int64')/10
-    hmf2 = daily[0].str.slice(-15, -12).astype('int64')
+    hpF2 = daily[0].str.slice(-15, -12).astype('int64')
     foE  = daily[0].str.slice(16, 19).astype('int64')/100
     hmE  = daily[0].str.slice(21, 24).astype('int64')
     M3000F2  = daily[0].str.slice(-5, -2).astype('int64')/100
@@ -335,7 +343,7 @@ def aus(url, proxy=None):
     time  = pd.to_datetime(daily[0].str.slice(stop = 10).astype('int64')+200000000000, format='%Y%m%d%H%M')
     
     fof2day = pd.DataFrame(data={'fof2': f2, 
-                                 'hmf2': hmf2, 
+                                 'hpF2': hpF2, 
                                  'foE': foE, 
                                  'hmE': hmE,
                                  'M3000F2': M3000F2})

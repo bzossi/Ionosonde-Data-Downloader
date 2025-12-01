@@ -88,7 +88,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         #Data, the r'^\s*$' means white spaces, there are simpler ways but this works
         fof2 = data['foF2'].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
         foE  = data['foE'].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
-        hmF2 = data["h'F2"].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
+        hpF2 = data["h'F2"].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
         hmE  = data["h'E"].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')
         
         # M3000F2  = data["M3F2 "].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
@@ -96,7 +96,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         manu = pd.DataFrame(data  = {'fof2': fof2,
                                      'foE' : foE, 
                                      'hmE' : hmE, 
-                                     'hmF2': hmF2,
+                                     'hpF2': hpF2,
                                      # 'M3000F2': M3000F2
                                      })
         manu.index = dates
@@ -123,7 +123,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         
         fof2 = data['foF2'].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
         foE = data["foE"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
-        hmF2 = data["h'F2"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
+        hpF2 = data["h'F2"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
         hmE = data["h'E"].str.slice(1, 5).replace(r'^\s*$', np.nan, regex=True).astype('float64')/10
         
         # M3000F2  = data['   M3F2  '].str.slice(stop=3).replace(r'^\s*$', np.nan, regex=True).astype('float64')/100
@@ -132,7 +132,7 @@ def ionosondesJapan(station=None, year=None, proxy=None):
         auto = pd.DataFrame(data  = {'fof2': fof2,
                                      'foE' : foE, 
                                      'hmE' : hmE, 
-                                     'hmF2': hmF2,
+                                     'hpF2': hpF2,
                                      # 'M3000F2': M3000F2
                                      })
         auto.index = dates
